@@ -3,5 +3,11 @@
 @tailwind utilities;
 
 body {
-    @apply w-screen h-screen bg-slate-50;
+  @apply w-screen h-screen bg-slate-50;
+}
+
+@layer base {
+  h1 {
+    @apply text-2xl font-semibold;
+  }
 }
