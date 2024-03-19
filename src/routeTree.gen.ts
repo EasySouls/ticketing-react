@@ -13,6 +13,8 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as BoardsNewImport } from './routes/boards/new'
+import { Route as BoardsBoardIdImport } from './routes/boards/$boardId'
 
 // Create Virtual Routes
 
@@ -37,12 +39,30 @@ const BoardsIndexLazyRoute = BoardsIndexLazyImport.update({
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/boards/index.lazy').then((d) => d.Route))
 
+const BoardsNewRoute = BoardsNewImport.update({
+  path: '/boards/new',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const BoardsBoardIdRoute = BoardsBoardIdImport.update({
+  path: '/boards/$boardId',
+  getParentRoute: () => rootRoute,
+} as any)
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
     '/': {
       preLoaderRoute: typeof IndexLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/boards/$boardId': {
+      preLoaderRoute: typeof BoardsBoardIdImport
+      parentRoute: typeof rootRoute
+    }
+    '/boards/new': {
+      preLoaderRoute: typeof BoardsNewImport
       parentRoute: typeof rootRoute
     }
     '/boards/': {
@@ -60,6 +80,8 @@ declare module '@tanstack/react-router' {
 
 export const routeTree = rootRoute.addChildren([
   IndexLazyRoute,
+  BoardsBoardIdRoute,
+  BoardsNewRoute,
   BoardsIndexLazyRoute,
   TicketsIndexLazyRoute,
 ])
