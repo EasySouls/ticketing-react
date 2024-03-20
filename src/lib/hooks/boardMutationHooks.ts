@@ -15,7 +15,7 @@ export const useCreateBoardMutation = () => {
 };
 
 async function updateBoardTitle(boardId: number, title: string) {
-  const res = await axios.put(`boards/${boardId}`, { title });
+  const res = await axios.patch(`boards/${boardId}`, { title });
   return res.data;
 }
 
@@ -23,10 +23,28 @@ export const useUpdateBoardTitleMutation = (boardId: number) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationKey: ['boards'],
+    mutationKey: ['boards', boardId],
     mutationFn: (title: string) => updateBoardTitle(boardId, title),
     onSuccess: (newBoard) => {
+      // TODO - this doesn't refresh the current page
       return queryClient.setQueryData(['boards', boardId], newBoard);
+    },
+  });
+};
+
+function deleteBoard(boardId: number) {
+  return axios.delete(`boards/${boardId}`);
+}
+
+export const useDeleteBoardMutation = (boardId: number) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationKey: ['boards'],
+    mutationFn: () => deleteBoard(boardId),
+    onMutate: () => {
+      // TODO - this doesn't refresh the current page
+      queryClient.invalidateQueries({ queryKey: ['boards'] });
     },
   });
 };

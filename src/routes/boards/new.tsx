@@ -25,7 +25,11 @@ function NewBoardPage() {
             },
             {
               // TODO - Navigate to the newly created board
-              onSuccess: () => navigate({ to: '/boards' }),
+              onSuccess: (variables) =>
+                navigate({
+                  to: `/boards/$boardId`,
+                  params: { boardId: variables.id },
+                }),
             },
           );
         }}

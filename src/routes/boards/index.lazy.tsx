@@ -23,6 +23,7 @@ function BoardsPage() {
           <p>Error happened while retrieving boards. Try reloading th page</p>
         )}
 
+        {/* TODO - Add loading skeletons */}
         {boards &&
           boards.map((board) => {
             return <BoardItem key={board.id} board={board} />;

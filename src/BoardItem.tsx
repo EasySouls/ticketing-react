@@ -1,14 +1,20 @@
 import { useState } from 'react';
 import { Board } from './types';
-import axios from 'axios';
-import { API_URL } from '@/util/envs.ts';
 import { Button } from './components/ui/button';
+import {
+  useDeleteBoardMutation,
+  useUpdateBoardTitleMutation,
+} from './lib/hooks/boardMutationHooks';
+import { Link } from '@tanstack/react-router';
 
 interface BoardItemProps {
   board: Board;
 }
 
 const BoardItem = ({ board }: BoardItemProps) => {
+  const deleteBoardMutation = useDeleteBoardMutation(board.id);
+  const updateBoardTitleMutation = useUpdateBoardTitleMutation(board.id);
+
   const [isEditing, setIsEditing] = useState(false);
   const [newBoardTitle, setNewBoardTitle] = useState('');
 
@@ -16,18 +22,18 @@ const BoardItem = ({ board }: BoardItemProps) => {
 
   async function handleClick() {
     if (isEditing) {
-      await axios.patch(`${API_URL}/boards/${id}`, { title: newBoardTitle });
+      updateBoardTitleMutation.mutate(newBoardTitle);
     }
 
     setIsEditing((prev) => !prev);
   }
 
-  async function onDelete() {
-    await axios.delete(`${API_URL}/boards/${id}`);
-  }
-
   return (
-    <div className="border border-black rounded-md p-2">
+    <Link
+      to={`/boards/$boardId`}
+      params={{ boardId: String(board.id) }}
+      className="border border-black rounded-md p-2"
+    >
       <p>Id: {id}</p>
       {isEditing ? (
         <input
@@ -56,13 +62,13 @@ const BoardItem = ({ board }: BoardItemProps) => {
         ) : (
           <Button
             className="bg-red-500 p-2 rounded-md text-white hover:bg-red-400 transition-colors duration-300"
-            onClick={onDelete}
+            onClick={() => deleteBoardMutation.mutate()}
           >
             Törlés
           </Button>
         )}
       </div>
-    </div>
+    </Link>
   );
 };
 
