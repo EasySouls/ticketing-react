@@ -24,7 +24,6 @@ function NewBoardPage() {
               title: new FormData(event.currentTarget).get('title') as string,
             },
             {
-              // TODO - Navigate to the newly created board
               onSuccess: (variables) =>
                 navigate({
                   to: `/boards/$boardId`,

@@ -1,5 +1,5 @@
 import { createLazyFileRoute, Link } from '@tanstack/react-router';
-import BoardItem from '../../BoardItem';
+import BoardItem from '../../components/BoardItem';
 import { useFetchBoardsQuery } from '@/lib/hooks/boardQueryHooks';
 import { Button } from '@/components/ui/button';
 

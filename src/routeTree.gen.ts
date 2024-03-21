@@ -13,6 +13,7 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as TicketsTicketIdImport } from './routes/tickets/$ticketId'
 import { Route as BoardsNewImport } from './routes/boards/new'
 import { Route as BoardsBoardIdImport } from './routes/boards/$boardId'
 
@@ -38,6 +39,11 @@ const BoardsIndexLazyRoute = BoardsIndexLazyImport.update({
   path: '/boards/',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/boards/index.lazy').then((d) => d.Route))
+
+const TicketsTicketIdRoute = TicketsTicketIdImport.update({
+  path: '/tickets/$ticketId',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const BoardsNewRoute = BoardsNewImport.update({
   path: '/boards/new',
@@ -65,6 +71,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BoardsNewImport
       parentRoute: typeof rootRoute
     }
+    '/tickets/$ticketId': {
+      preLoaderRoute: typeof TicketsTicketIdImport
+      parentRoute: typeof rootRoute
+    }
     '/boards/': {
       preLoaderRoute: typeof BoardsIndexLazyImport
       parentRoute: typeof rootRoute
@@ -82,6 +92,7 @@ export const routeTree = rootRoute.addChildren([
   IndexLazyRoute,
   BoardsBoardIdRoute,
   BoardsNewRoute,
+  TicketsTicketIdRoute,
   BoardsIndexLazyRoute,
   TicketsIndexLazyRoute,
 ])
