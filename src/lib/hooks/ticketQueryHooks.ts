@@ -9,7 +9,7 @@ async function getTicketById(ticketId: number): Promise<Ticket> {
 
 export const useTicketByIdQuery = (ticketId: number) => {
   return useQuery({
-    queryKey: ['ticket', ticketId],
+    queryKey: ['tickets', ticketId],
     queryFn: () => getTicketById(ticketId),
   });
 };
@@ -20,7 +20,7 @@ async function getTicketsByBoardId(boardId: number): Promise<Ticket[]> {
   return tickets.filter((ticket) => ticket.boardId === Number(boardId));
 }
 
-export const useTicketsByBoardIdQuery = (boardId: string) => {
+export const useTicketsByBoardIdQuery = (boardId: number) => {
   return useQuery({
     queryKey: ['tickets', boardId],
     queryFn: () => getTicketsByBoardId(Number(boardId)),
@@ -40,7 +40,7 @@ async function getTicketsCountByPhase(
 }
 
 export const useTicketsCountByPhaseQuery = (
-  boardId: string,
+  boardId: number,
   ticketPhase: TicketPhase,
 ) => {
   return useQuery({
@@ -63,6 +63,6 @@ async function getOpenTicketsCount(boardId: number): Promise<number> {
 export const useOpenTicketsCountQuery = (boardId: number) => {
   return useQuery({
     queryKey: ['tickets', boardId],
-    queryFn: () => getOpenTicketsCount(Number(boardId)),
+    queryFn: () => getOpenTicketsCount(boardId),
   });
 };

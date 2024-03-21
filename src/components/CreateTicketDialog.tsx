@@ -41,20 +41,22 @@ export default function CreateTicketDialog({ boardId }: { boardId: number }) {
         </div>
         <DialogFooter>
           {/* TODO - Add feedback, like a toast message */}
-          <Button
-            value="primary"
-            onClick={() => {
-              console.log('Creating ticket');
-              createTicketMutation.mutate({
-                ticket: {
-                  name: name,
-                  description: description,
-                },
-              });
-            }}
-          >
-            Create
-          </Button>
+          <DialogClose asChild>
+            <Button
+              value="primary"
+              onClick={() => {
+                console.log('Creating ticket');
+                createTicketMutation.mutate({
+                  ticket: {
+                    name: name,
+                    description: description,
+                  },
+                });
+              }}
+            >
+              Create
+            </Button>
+          </DialogClose>
           <DialogClose asChild>
             <Button variant="destructive">Cancel</Button>
           </DialogClose>

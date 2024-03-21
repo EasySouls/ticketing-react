@@ -13,7 +13,7 @@ function BoardDetailsPage() {
   const { data: board, error: boardError } = useFetchBoardByIdQuery(
     Number(boardId),
   );
-  const ticketQuery = useTicketsByBoardIdQuery(boardId);
+  const ticketQuery = useTicketsByBoardIdQuery(Number(boardId));
 
   if (!board) {
     return <div>Loading...</div>;

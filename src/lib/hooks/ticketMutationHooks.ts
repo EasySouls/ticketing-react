@@ -1,5 +1,5 @@
 import { CreateTicket, TicketPhase } from '@/types';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 
 async function createTicket(boardId: number, ticket: CreateTicket) {
@@ -15,9 +15,14 @@ async function createTicket(boardId: number, ticket: CreateTicket) {
 }
 
 export const useCreateTicketMutation = (boardId: number) => {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationKey: ['tickets', boardId],
     mutationFn: ({ ticket }: { ticket: CreateTicket }) =>
       createTicket(boardId, ticket),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['tickets', boardId] });
+    },
   });
 };
