@@ -9,17 +9,22 @@ export interface CreateBoard {
 }
 
 export enum TicketPhase {
-  CREATED,
-  IN_PROGRESS,
-  UNDER_REVIEW,
-  CLOSED,
+  CREATED = 'CREATED',
+  IN_PROGRESS = 'IN_PROGRESS',
+  UNDER_REVIEW = 'UNDER_REVIEW',
+  CLOSED = 'CLOSED',
 }
 
 export interface Ticket {
   id: number;
-  title: string;
+  name: string;
   description: string;
   phase: TicketPhase;
   boardId: number;
   createdAt: string;
+}
+
+export interface CreateTicket {
+  name: string;
+  description: string;
 }

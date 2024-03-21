@@ -1,3 +1,5 @@
+import CreateTicketDialog from '@/components/CreateTicketDialog';
+import TicketPanel from '@/components/TicketPanel';
 import { useFetchBoardByIdQuery } from '@/lib/hooks/boardQueryHooks';
 import { useTicketsByBoardIdQuery } from '@/lib/hooks/ticketQueryHooks';
 import { createFileRoute } from '@tanstack/react-router';
@@ -30,14 +32,14 @@ function BoardDetailsPage() {
           <p>{new Date(board.createdAt).toDateString()}</p>
         </div>
 
-        <h2>Tickets</h2>
-        <div className="grid grid-cols-3 gap-4">
+        <h2 className="mb-4">Tickets</h2>
+
+        {/* Create New Ticket Dialog */}
+        <CreateTicketDialog boardId={board.id} />
+
+        <div className="mt-4 grid grid-cols-3 gap-4">
           {ticketQuery.data?.map((ticket) => (
-            <div key={ticket.id} className="p-4 bg-white rounded-lg shadow-md">
-              <h3>{ticket.title}</h3>
-              <p>{ticket.phase}</p>
-              <p>{ticket.description}</p>
-            </div>
+            <TicketPanel key={ticket.id} ticket={ticket} />
           ))}
         </div>
       </div>
