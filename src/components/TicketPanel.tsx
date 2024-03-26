@@ -11,7 +11,7 @@ export default function TicketPanel({ ticket }: TicketProps) {
     <Link
       to="/tickets/$ticketId"
       params={{ ticketId: String(ticket.id) }}
-      className="p-4 bg-white rounded-lg shadow-md"
+      className="p-4 dark:bg-slate-800 rounded-lg shadow-md"
     >
       <h3>{ticket.name}</h3>
       <hr className="h-[2px] bg-black" />

@@ -1,7 +1,8 @@
-import { createRootRoute, Outlet } from '@tanstack/react-router';
+import { createRootRouteWithContext, Outlet } from '@tanstack/react-router';
 import Header from '../components/Header';
 import React, { Suspense } from 'react';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { QueryClient } from '@tanstack/react-query';
 
 const TanStackRouterDevtools =
   import.meta.env.NODE_ENV === 'production'
@@ -12,15 +13,17 @@ const TanStackRouterDevtools =
         })),
       );
 
-export const Route = createRootRoute({
-  component: () => (
-    <>
-      <Header />
-      <Outlet />
-      <Suspense>
-        <TanStackRouterDevtools />
-        <ReactQueryDevtools />
-      </Suspense>
-    </>
-  ),
-});
+export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
+  {
+    component: () => (
+      <>
+        <Header />
+        <Outlet />
+        <Suspense>
+          <TanStackRouterDevtools />
+          <ReactQueryDevtools />
+        </Suspense>
+      </>
+    ),
+  },
+);

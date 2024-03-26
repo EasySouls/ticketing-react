@@ -1,6 +1,13 @@
 import { Ticket, TicketPhase } from '@/types';
-import { useQuery } from '@tanstack/react-query';
+import { queryOptions, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
+
+export const ticketQueryOptions = (boardId: number) => {
+  return queryOptions({
+    queryKey: ['tickets', boardId],
+    queryFn: () => getTicketsByBoardId(Number(boardId)),
+  });
+};
 
 async function getTicketById(ticketId: number): Promise<Ticket> {
   const res = await axios.get(`/tickets/${ticketId}`);

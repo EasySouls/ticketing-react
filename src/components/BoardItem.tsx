@@ -15,7 +15,7 @@ const BoardItem = ({ board }: BoardItemProps) => {
     <Link
       to={`/boards/$boardId`}
       params={{ boardId: String(board.id) }}
-      className="border border-black rounded-md p-2"
+      className="border border-black rounded-md p-2 dark:bg-slate-800"
     >
       <h3 className="text-lg">{title}</h3>
       <p>Open tickets: {openTicketsCount}</p>

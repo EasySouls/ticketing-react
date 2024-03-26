@@ -2,6 +2,7 @@ import { RouterProvider, createRouter } from '@tanstack/react-router';
 import { routeTree } from './routeTree.gen';
 import { initAxios, queryClient } from './util/query-client';
 import { QueryClientProvider } from '@tanstack/react-query';
+import { ThemeProvider } from './contexts/theme-provider';
 
 const router = createRouter({
   routeTree,
@@ -24,8 +25,10 @@ initAxios();
 
 export default function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
-    </QueryClientProvider>
+    <ThemeProvider defaultTheme="system" storageKey="ticketing-ui-theme">
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+      </QueryClientProvider>
+    </ThemeProvider>
   );
 }

@@ -1,19 +1,28 @@
 import CreateTicketDialog from '@/components/CreateTicketDialog';
 import TicketPanel from '@/components/TicketPanel';
-import { useFetchBoardByIdQuery } from '@/lib/hooks/boardQueryHooks';
-import { useTicketsByBoardIdQuery } from '@/lib/hooks/ticketQueryHooks';
+import { boardQueryOptions } from '@/lib/hooks/boardQueryHooks';
+import { ticketQueryOptions } from '@/lib/hooks/ticketQueryHooks';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/boards/$boardId')({
   component: BoardDetailsPage,
+  loader: (opts) => {
+    opts.context.queryClient.ensureQueryData(
+      boardQueryOptions(Number(opts.params.boardId)),
+    );
+    opts.context.queryClient.ensureQueryData(
+      ticketQueryOptions(Number(opts.params.boardId)),
+    );
+  },
 });
 
 function BoardDetailsPage() {
   const { boardId } = Route.useParams();
-  const { data: board, error: boardError } = useFetchBoardByIdQuery(
-    Number(boardId),
+  const { data: board, error: boardError } = useSuspenseQuery(
+    boardQueryOptions(Number(boardId)),
   );
-  const ticketQuery = useTicketsByBoardIdQuery(Number(boardId));
+  const ticketQuery = useSuspenseQuery(ticketQueryOptions(Number(boardId)));
 
   if (!board) {
     return <div>Loading...</div>;
@@ -24,7 +33,7 @@ function BoardDetailsPage() {
   }
 
   return (
-    <main className="flex flex-col gap-4  min-h-screen bg-slate-100 p-4">
+    <main className="flex flex-col gap-4  min-h-screen p-4">
       <h1 className="mt-4">{board?.title}</h1>
       <div className="">
         <div>
@@ -38,9 +47,13 @@ function BoardDetailsPage() {
         <CreateTicketDialog boardId={board.id} />
 
         <div className="mt-4 grid grid-cols-3 gap-4">
-          {ticketQuery.data?.map((ticket) => (
-            <TicketPanel key={ticket.id} ticket={ticket} />
-          ))}
+          {ticketQuery.isError && (
+            <div>Error loading tickets: {ticketQuery.error?.message}</div>
+          )}
+          {ticketQuery.data &&
+            ticketQuery.data.map((ticket) => (
+              <TicketPanel key={ticket.id} ticket={ticket} />
+            ))}
         </div>
       </div>
     </main>
