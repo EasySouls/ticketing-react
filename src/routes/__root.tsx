@@ -3,6 +3,7 @@ import Header from '../components/Header';
 import React, { Suspense } from 'react';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { QueryClient } from '@tanstack/react-query';
+import { Toaster } from '@/components/ui/toaster';
 
 const TanStackRouterDevtools =
   import.meta.env.NODE_ENV === 'production'
@@ -23,6 +24,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           <TanStackRouterDevtools />
           <ReactQueryDevtools />
         </Suspense>
+        <Toaster />
       </>
     ),
   },

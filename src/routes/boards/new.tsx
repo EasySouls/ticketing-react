@@ -13,10 +13,10 @@ function NewBoardPage() {
   const navigate = useNavigate();
 
   return (
-    <main className="flex flex-col gap-4 items-center min-h-screen bg-slate-100">
-      <h1 className="mt-4">Create New Board</h1>
+    <main className="flex flex-col gap-4 items-center min-h-screen">
+      <h1 className="mt-8 text-3xl">Create New Board</h1>
       <form
-        className="flex flex-col gap-2 p-4"
+        className="flex flex-col gap-4 mt-4"
         onSubmit={(event) => {
           event.preventDefault();
           createBoardMutation.mutate(

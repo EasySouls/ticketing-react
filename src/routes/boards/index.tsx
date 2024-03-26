@@ -8,7 +8,7 @@ export const Route = createFileRoute('/boards/')({
 });
 
 function BoardsPage() {
-  const { data: boards, error, isPending } = useFetchBoardsQuery();
+  const { data: boards, error, isFetching } = useFetchBoardsQuery();
 
   return (
     <main className="flex flex-col gap-4 items-center justify-center min-h-screen">
@@ -16,11 +16,11 @@ function BoardsPage() {
       <Button asChild className="">
         <Link to="/boards/new">Create New</Link>
       </Button>
-      <div className="grid grid-cols-2 gap-2 p-4">
-        {isPending && <p>Loading</p>}
+      <div className="grid grid-cols-3 gap-4 p-4">
+        {isFetching && <p>Loading</p>}
 
         {error && (
-          <p>Error happened while retrieving boards. Try reloading th page</p>
+          <p>Error happened while retrieving boards. Try reloading the page</p>
         )}
 
         {/* TODO - Add loading skeletons */}

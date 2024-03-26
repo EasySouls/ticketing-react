@@ -10,8 +10,9 @@ export const boardQueryOptions = (boardId: number) => {
 };
 
 async function fetchBoards(): Promise<Board[]> {
-  const res = await axios.get('boards');
-  return res.data;
+  // TODO - paginate with React Query
+  const res = await axios.get<Board[]>('boards');
+  return res.data.slice(1, 30);
 }
 
 export const useFetchBoardsQuery = () => {

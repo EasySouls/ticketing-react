@@ -1,28 +1,20 @@
 import CreateTicketDialog from '@/components/CreateTicketDialog';
-import TicketPanel from '@/components/TicketPanel';
+import TicketCard from '@/components/TicketCard';
 import { boardQueryOptions } from '@/lib/hooks/boardQueryHooks';
 import { ticketQueryOptions } from '@/lib/hooks/ticketQueryHooks';
-import { useSuspenseQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/boards/$boardId')({
   component: BoardDetailsPage,
-  loader: (opts) => {
-    opts.context.queryClient.ensureQueryData(
-      boardQueryOptions(Number(opts.params.boardId)),
-    );
-    opts.context.queryClient.ensureQueryData(
-      ticketQueryOptions(Number(opts.params.boardId)),
-    );
-  },
 });
 
 function BoardDetailsPage() {
   const { boardId } = Route.useParams();
-  const { data: board, error: boardError } = useSuspenseQuery(
+  const { data: board, error: boardError } = useQuery(
     boardQueryOptions(Number(boardId)),
   );
-  const ticketQuery = useSuspenseQuery(ticketQueryOptions(Number(boardId)));
+  const ticketQuery = useQuery(ticketQueryOptions(Number(boardId)));
 
   if (!board) {
     return <div>Loading...</div>;
@@ -52,7 +44,7 @@ function BoardDetailsPage() {
           )}
           {ticketQuery.data &&
             ticketQuery.data.map((ticket) => (
-              <TicketPanel key={ticket.id} ticket={ticket} />
+              <TicketCard key={ticket.id} ticket={ticket} />
             ))}
         </div>
       </div>
